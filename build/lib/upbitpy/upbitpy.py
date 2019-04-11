@@ -26,7 +26,7 @@ class Upbitpy():
 
     def _post(self, url, headers, data, result_code=200):
         resp = requests.post(url, headers=headers, data=data)
-        if resp.status_code != result_code:
+        if resp.status_code != result_code and resp.status_code != 201:
             logging.error('post(%s) failed(%d)' % (url, resp.status_code))
             if resp.text is not None:
                 raise Exception('request.post() failed(%s)' % resp.text)
@@ -463,6 +463,40 @@ class Upbitpy():
                 markets_data += ',%s' % market
             params = {'markets': markets_data}
             return self._get(URL, params=params)
+        except Exception as e:
+            logging.error(e)
+            raise Exception(e)
+
+    def get_all_address(self):
+        URL = 'https://api.upbit.com/v1/deposits/coin_addresses'
+        try:
+            addresss_ = self._get(URL, self._get_headers())
+            for_make_dic_ = {}
+            for address_ in addresss_:
+                try:
+                    if address_['secondary_address'] == None:
+                        for_make_dic_.update({address_['currency']:address_['deposit_address']})
+                    else:
+                        for_make_dic_.update({address_['currency']:address_['deposit_address']+', '+address_['secondary_address']})
+                except:
+                    continue
+            return for_make_dic_
+        except Exception as e:
+            logging.error(e)
+            raise Exception(e)
+
+    def get_address(self, currency):
+        URL = 'https://api.upbit.com/v1/deposits/generate_coin_address'
+        try:
+            data = {'currency': currency}
+            result_address_ = self._post(URL, self._get_headers(data), data)
+            try:
+                if result_address_['secondary_address'] == None:
+                    return result_address_['deposit_address']
+                else:
+                    return str(result_address_['deposit_address'] + ' / ' + result_address_['secondary_address'])
+            except:
+                return result_address_
         except Exception as e:
             logging.error(e)
             raise Exception(e)
