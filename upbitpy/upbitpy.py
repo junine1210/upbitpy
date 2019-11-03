@@ -111,20 +111,20 @@ class Upbitpy():
     # state: 'wait', 'done', 'cancel'
     # order_by: 'asc', 'desc'
 
-    def get_orders(self, market, state, page=1, order_by='asc'):
+    def get_orders(self, market=None, state=None, page=1, order_by='desc'):
         URL = 'https://api.upbit.com/v1/orders'
         try:
-            if market not in self.markets:
-                logging.error('invalid market: %s' % market)
-                raise Exception('invalid market: %s' % market)
-
-            if state not in ['wait', 'done', 'cancel']:
-                logging.error('invalid state: %s' % state)
-                raise Exception('invalid state: %s' % state)
-
-            if order_by not in ['asc', 'desc']:
-                logging.error('invalid order_by: %s' % order_by)
-                raise Exception('invalid order_by: %s' % order_by)
+            # if market not in self.markets:
+            #     logging.error('invalid market: %s' % market)
+            #     raise Exception('invalid market: %s' % market)
+            #
+            # if state not in ['wait', 'done', 'cancel']:
+            #     logging.error('invalid state: %s' % state)
+            #     raise Exception('invalid state: %s' % state)
+            #
+            # if order_by not in ['asc', 'desc']:
+            #     logging.error('invalid order_by: %s' % order_by)
+            #     raise Exception('invalid order_by: %s' % order_by)
 
             data = {
                 'market': market,
@@ -132,6 +132,14 @@ class Upbitpy():
                 'page': page,
                 'order_by': order_by
             }
+            if market == None:
+                del data['market']
+            if state == None:
+                del data['state']
+            if page == None:
+                del data['page']
+            if order_by == None:
+                del data['order_by']
             return self._get(URL, self._get_headers(data), data)
         except Exception as e:
             logging.error(e)
