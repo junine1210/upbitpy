@@ -6,6 +6,7 @@ import jwt
 import logging
 from urllib.parse import urlencode
 
+import uuid
 
 # https://docs.upbit.com/v1.0/reference
 class Upbitpy():
@@ -58,7 +59,7 @@ class Upbitpy():
     def _get_token(self, query):
         payload = {
             'access_key': self.access_key,
-            'nonce': int(time.time() * 1000),
+            'nonce': str(uuid.uuid4())#int(time.time() * 1000),
         }
         if query is not None:
             payload['query'] = urlencode(query)
