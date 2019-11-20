@@ -1,3 +1,6 @@
 build/
 dist/
 upbitpy.egg-info/
+
+.DS_Store
+**/.DS_Store
