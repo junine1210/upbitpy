@@ -236,6 +236,18 @@ class Upbitpy():
     # state: submitting, submitted, almost_accepted, rejected, accepted, processing, done, canceled
     # limit: default:100, max:100
 
+    def get_deposits(self, currency):
+        URL = 'https://api.upbit.com/v1/deposits'
+        try:
+            data = {}
+            data['currency'] = currency
+            # data['state'] = state
+            # data['limit'] = limit
+            return self._get(URL, self._get_headers(data), data)
+        except Exception as e:
+            logging.error(e)
+            raise Exception(e)
+
     def get_withraws(self, currency, state, limit):
         LIMIT_MAX = 100
         VALID_STATE = ['submitting', 'submitted', 'almost_accepted',
