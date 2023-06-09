@@ -521,3 +521,19 @@ class Upbitpy():
         except Exception as e:
             logging.error(e)
             raise Exception(e)
+
+    def get_address_new(self, currency, net_type):
+        URL = 'https://api.upbit.com/v1/deposits/generate_coin_address'
+        try:
+            data = {'currency': currency, 'net_type': net_type}
+            result_address_ = self._post(URL, self._get_headers(data), data)
+            try:
+                if result_address_['secondary_address'] == None:
+                    return result_address_['deposit_address']
+                else:
+                    return str(result_address_['deposit_address'] + ' / ' + result_address_['secondary_address'])
+            except:
+                return result_address_
+        except Exception as e:
+            logging.error(e)
+            raise Exception(e)
