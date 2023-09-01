@@ -538,6 +538,15 @@ class Upbitpy():
             logging.error(e)
             raise Exception(e)
 
+    def get_withraws_chance_new(self, currency, net_type):
+        URL = 'https://api.upbit.com/v1/withdraws/chance'
+        try:
+            data = {'currency': currency, 'net_type': net_type}
+            return self._get(URL, self._get_headers(data), data)
+        except Exception as e:
+            logging.error(e)
+            raise Exception(e)
+
     def withdraws_coin_new(self, currency, net_type, amount, address, secondary_address=None):
         URL = 'https://api.upbit.com/v1/withdraws/coin'
         try:
