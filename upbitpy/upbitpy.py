@@ -537,3 +537,19 @@ class Upbitpy():
         except Exception as e:
             logging.error(e)
             raise Exception(e)
+
+    def withdraws_coin_new(self, currency, net_type, amount, address, secondary_address=None):
+        URL = 'https://api.upbit.com/v1/withdraws/coin'
+        try:
+            data = {
+                'currency': currency,
+                'amount': amount,
+                'address': address,
+                'net_type': net_type
+            }
+            if secondary_address is not None:
+                data['secondary_address'] = secondary_address
+            return self._post(URL, self._get_headers(data), data)
+        except Exception as e:
+            logging.error(e)
+            raise Exception(e)
