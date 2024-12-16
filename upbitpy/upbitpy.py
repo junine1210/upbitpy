@@ -562,3 +562,23 @@ class Upbitpy():
         except Exception as e:
             logging.error(e)
             raise Exception(e)
+
+    def get_vasps(self):
+        URL = 'https://api.upbit.com/v1/travel_rule/vasps'
+        try:
+            return self._get(URL, self._get_headers())
+        except Exception as e:
+            logging.error(e)
+            raise Exception(e)
+
+    def travel_rule_uuid(self, deposit_uuid, vasp_uuid):
+        URL = 'https://api.upbit.com/v1/travel_rule/deposit/uuid'
+        try:
+            data = {
+                'deposit_uuid': deposit_uuid,
+                'vasp_uuid': vasp_uuid
+            }
+            return self._post(URL, self._get_headers(data), data)
+        except Exception as e:
+            logging.error(e)
+            raise Exception(e)
