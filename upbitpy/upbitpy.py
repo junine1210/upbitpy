@@ -316,7 +316,8 @@ class Upbitpy():
     def withdraws_krw(self, amount):
         URL = 'https://api.upbit.com/v1/withdraws/krw'
         try:
-            data = {'amount': amount}
+            data = {'amount': amount,
+                   'two_factor_type': 'kakao'}
             return self._post(URL, self._get_headers(data), data)
         except Exception as e:
             logging.error(e)
